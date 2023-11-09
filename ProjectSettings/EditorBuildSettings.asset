@@ -4,5 +4,20 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/MenuInicial.unity
+    guid: 422b9ce061185ff4891045d39f5cf3d9
+  - enabled: 1
+    path: Assets/Scenes/SelectGame.unity
+    guid: 22b4989ce4088ba41a6720205ebe58cb
+  - enabled: 1
+    path: Assets/Scenes/CrediitScene.unity
+    guid: 3a760be535d155641b98b9c18fde53c0
+  - enabled: 1
+    path: Assets/Scenes/OptionScene.unity
+    guid: 00b9243baa89d954ab3ada0d9b51624b
+  - enabled: 1
+    path: Assets/Scenes/Nivel1.unity
+    guid: cc13ceb6b9e8fca478dc411d9b1ee29c
   m_configObjects: {}
