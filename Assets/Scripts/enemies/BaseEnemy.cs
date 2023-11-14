@@ -2,13 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum STATES : int
+{
+    WITH_ENEMY, WITOUT_ENEMY
+}
+
+
 public class BaseEnemy : MonoBehaviour
 {
     [SerializeField]
     protected float life;
 
-    private MeshRenderer meshRenderer;
+    protected MeshRenderer meshRenderer;
 
+    protected Player target;
+
+    protected STATES sTATES = STATES.WITOUT_ENEMY;
 
     private void Awake()
     {
