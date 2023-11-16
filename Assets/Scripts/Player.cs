@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -45,89 +46,108 @@ public class Player : MonoBehaviour
     [Tooltip("Rango de ataque para frontal Attack")]
     private float frontalAttackRange;
 
-
     [SerializeField]
+    [Tooltip("Componente que se encarga de disparar")]
     private GunBehaviour gun;
 
     [SerializeField]
+    [Tooltip("Vidas del jugador")]
     private int numOfLives;
 
     [SerializeField]
+    [Tooltip("Tiempo de CD para el frontal Attack")]
     private float currentLife;
 
     [SerializeField]
+    [Tooltip("Referencia al controlador del nivel")]
     private LevelSceneManager levelSceneManager;
 
-    private int currentNumJump;
-
-    private bool onGround = true;
-
-    private bool bendActive = false;
-
-    private bool running = false;
-
-    private bool defensiveModeActive = false;
-
-    private Rigidbody rb;
-
-    private CapsuleCollider capCollider;
-
     [SerializeField]
+    [Tooltip("Referencia al animator del player")]
     private Animator animator;
 
+
+    // Cantidad de saltos que lleva
+    private int currentNumJump;
+
+    // Determina si el jugador está tocando el suelo
+    private bool onGround = true;
+
+    // Booleano que determina si el player está agachado o no
+    private bool bendActive = false;
+
+    // Determina si el jugador está corriendo
+    private bool running = false;
+
+    // Determina si el jugador está con la defensa activada
+    private bool defensiveModeActive = false;
+
+    // Referencia al rigidBody
+    private Rigidbody rb;
+
+    // Referencia al collider del player
+    private CapsuleCollider capCollider;
+
+    // Posición inicial del player (para respawn)
     private Vector3 initPos;
 
+    // Determina si el player está ejecutando el frontal attack
     private bool frontalAttackRdy = true;
 
-    // El primer método de unity que se llama
-    //  -> para los gets
+    // Gets
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        initPos = transform.position;
         capCollider = GetComponent<CapsuleCollider>();
+        // Guardar posición inicial del player
+        initPos = transform.position;
     }
 
-
-    private void Start()
-    {
-       
-    }
-
-    // se llama una vez x frame -> 60fps -> 60 x segundo
+    // correción de velocidad (velocidad física y velocidad para animación)
     private void Update()
     {
+        // capar la velocidad si se pasa, poner el player a la velocidad máxima
         if (Mathf.Abs(rb.velocity.x) > maxSpeed)
         {
-            float factor = rb.velocity.normalized.x * (bendActive ? maxBendSpeed : maxSpeed);
-            rb.velocity = new Vector3(factor, rb.velocity.y, rb.velocity.z);
+            float maximaVelocidadPermitidaX = rb.velocity.normalized.x * (bendActive ? maxBendSpeed : maxSpeed);
+            rb.velocity = new Vector3(maximaVelocidadPermitidaX, rb.velocity.y, rb.velocity.z);
         }
-
+        
+        // Pasar a las variables de animación las velocides para el blend tree
         if (bendActive)
         {
-            animator.SetFloat("movY", -1.0f);
-            animator.SetFloat("movX", rb.velocity.x);
+            animator.SetFloat("movXA", -1.0f);
+            animator.SetFloat("movZA", rb.velocity.x);
+        }
+        if (!onGround)
+        {
+            animator.SetFloat("movY", rb.velocity.y);
         }
         else
         {
-            float x = onGround ? rb.velocity.x : 0f;
+            animator.SetFloat("movZ", rb.velocity.x);
+            animator.SetFloat("movX",rb.velocity.z);
             animator.SetFloat("movY", rb.velocity.y);
-            animator.SetFloat("movX", x);
         }
+
     }
 
+    // Devuelve true si el player está ejecutando frontal attack
     public bool FrontalAttackRdy()
     {
         return frontalAttackRdy;
     }
 
+    // Devuelve true si el player puede disparar
     public bool CanShot()
     {
         return gun.CanShot();
     }
 
+    // crea una ataque
     public void Attack()
     {
+        // donde guardo el objeto al que golpié con el rayo
         RaycastHit hit;
         Vector3 initPos = transform.position;
         Vector3 dir = transform.right;
@@ -156,11 +176,13 @@ public class Player : MonoBehaviour
         frontalAttackRdy = true;
     }
 
+    // si el jugador va a menos de la velocidad máxima devuelve true
     public bool CanMove()
     {
         return Mathf.Abs(rb.velocity.x) < (bendActive ? maxBendSpeed : maxSpeed);
     }
 
+    // Devuelve true si el jugador puede saltar
     public bool CanJump()
     {
         if (currentNumJump == 0)
@@ -173,24 +195,28 @@ public class Player : MonoBehaviour
         }
     }
 
+    // Devuelve true si el jugador está agachado
     public bool IsBendActive()
     {
         return bendActive;
     }
 
+    // Aumenta la velocidad del jugar hacia adeltante
     public void DashPlayer()
     {
         rb.velocity = Vector3.zero;
         rb.AddForce(transform.right * dashSpeed, ForceMode.Impulse);
     }
 
-    public void Move(Vector2 dir)
+    // Mueve al jugador en una dirección
+    public void Move(Vector3 dir)
     {
         float velocity = bendActive ? movBendVelocity : running ? runVelocity : walkVelocity;
         velocity = defensiveModeActive ? velocity / 2 : velocity;
         rb.AddForce(dir * velocity, ForceMode.Impulse);
     }
 
+    // HAce que el jugador salte
     public void Jump()
     {
         animator.SetTrigger("Jump");
@@ -205,7 +231,6 @@ public class Player : MonoBehaviour
 
     public void BendPlayer()
     {
-        
         bendActive = true;
         capCollider.height = 1;
         capCollider.center = new Vector3(0.0f, -0.5f, 0.0f);
@@ -257,6 +282,7 @@ public class Player : MonoBehaviour
         if (collision.gameObject.CompareTag("Plataform"))
         {
             currentNumJump = 0;
+
         }
     }
 
@@ -266,6 +292,7 @@ public class Player : MonoBehaviour
         {
             onGround = true;
         }
+
     }
 
     private void OnCollisionExit(Collision collision)

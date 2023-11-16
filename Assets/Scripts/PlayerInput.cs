@@ -13,6 +13,14 @@ public class PlayerInput : MonoBehaviour
     private KeyCode movBack;
 
     [SerializeField]
+    [Tooltip("Tecla para mover al player hacia la derecha")]
+    private KeyCode movRight;
+
+    [SerializeField]
+    [Tooltip("Tecla para mover al player hacia la izquierda")]
+    private KeyCode movLeft;
+
+    [SerializeField]
     [Tooltip("Tecla para saltar")]
     private KeyCode jump;
 
@@ -51,11 +59,20 @@ public class PlayerInput : MonoBehaviour
         {
             if (Input.GetKey(movForward) && player.CanMove())
             {
-                player.Move(Vector2.right);
+                player.Move(Vector3.right);
             }
             else if (Input.GetKey(movBack) && player.CanMove())
             {
-                player.Move(Vector2.left);
+                player.Move(Vector3.left);
+            }
+
+            if (Input.GetKey(movRight) && player.CanMove())
+            {
+                player.Move(Vector3.back);
+            }
+            else if (Input.GetKey(movLeft) && player.CanMove())
+            {
+                player.Move(Vector3.forward);
             }
 
             if (Input.GetKeyDown(frontalAttack) && player.FrontalAttackRdy())

@@ -23,7 +23,6 @@ public class BulletBehaviour : MonoBehaviour
     {
         enemyTag = _enemyTag;
         damage = _damage;
-        print(dir);
         rb.AddForce(dir * velocity, ForceMode.Impulse);
     }
 
