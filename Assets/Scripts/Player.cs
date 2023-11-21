@@ -112,18 +112,25 @@ public class Player : MonoBehaviour
             float maximaVelocidadPermitidaX = rb.velocity.normalized.x * (bendActive ? maxBendSpeed : maxSpeed);
             rb.velocity = new Vector3(maximaVelocidadPermitidaX, rb.velocity.y, rb.velocity.z);
         }
+
+        if (Mathf.Abs(rb.velocity.z) > maxSpeed)
+        {
+            float maximaVelocidadPermitidaZ = rb.velocity.normalized.z * (bendActive ? maxBendSpeed : maxSpeed);
+            rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y, maximaVelocidadPermitidaZ);
+        }
+        
         
         // Pasar a las variables de animación las velocides para el blend tree
-        if (bendActive)
+        if (bendActive)// variables de agachado
         {
-            animator.SetFloat("movXA", -1.0f);
+            animator.SetFloat("movXA", rb.velocity.z);
             animator.SetFloat("movZA", rb.velocity.x);
         }
-        if (!onGround)
+        else if (!onGround) // para modificar las variables de salto
         {
             animator.SetFloat("movY", rb.velocity.y);
         }
-        else
+        else // variables de movimiento
         {
             animator.SetFloat("movZ", rb.velocity.x);
             animator.SetFloat("movX",rb.velocity.z);
@@ -229,8 +236,10 @@ public class Player : MonoBehaviour
         rb.AddForce(Vector2.up * velocity, ForceMode.Force);
     }
 
+    // Método para agacharse
     public void BendPlayer()
     {
+        animator.SetBool("Crouch", true);
         bendActive = true;
         capCollider.height = 1;
         capCollider.center = new Vector3(0.0f, -0.5f, 0.0f);
@@ -238,6 +247,7 @@ public class Player : MonoBehaviour
 
     public void GetUpPlayer()
     {
+        animator.SetBool("Crouch", false);
         bendActive = false;
         capCollider.height = 2;
         capCollider.center = new Vector3(0.0f, 0.0f, 0.0f);
@@ -273,7 +283,8 @@ public class Player : MonoBehaviour
 
     private void Die()
     {
-
+        rb.velocity = Vector3.zero;
+        transform.position = initPos;
     }
 
     // metodo de unity que se llama al colisionar con algo
@@ -300,6 +311,14 @@ public class Player : MonoBehaviour
         if (collision.gameObject.CompareTag("Plataform"))
         {
             onGround = false;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("DeathZone"))
+        {
+            Die();
         }
     }
 
