@@ -257,6 +257,7 @@ public class Player : MonoBehaviour
     public void ReciveDamage(float damage)
     {
         currentLife -= damage;
+        print(currentLife);
         if (currentLife <= 0)
         {
             //Die();
@@ -270,19 +271,21 @@ public class Player : MonoBehaviour
 
     private void BackToRespawn()
     {
-        GetComponent<Renderer>().material.color = Color.red;
+        //GetComponent<Renderer>().material.color = Color.red;
+        print(currentLife);
         transform.position = initPos;
         Invoke(nameof(BackColor), 1.0f);
     }
 
     private void BackColor()
     {
-        GetComponent<Renderer>().material.color = Color.white;
+        //GetComponent<Renderer>().material.color = Color.white;
     }
 
 
     private void Die()
     {
+        currentLife = 10;
         rb.velocity = Vector3.zero;
         transform.position = initPos;
     }

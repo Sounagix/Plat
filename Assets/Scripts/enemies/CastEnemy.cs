@@ -2,15 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// Clase para el ataque cuerpo a cuerpo
-public class MeleeEnemy : Attack
+public class CastEnemy : Attack
 {
+    [SerializeField]
+    private GunBehaviour gunBehaviour;
+
     public override void AttackEnemy()
     {
         CancelInvoke();
         if (target != null)
         {
-            target.ReciveDamage(damage);
+            gunBehaviour.Shoot();
         }
         canAttack = false;
 

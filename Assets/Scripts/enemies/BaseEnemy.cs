@@ -4,10 +4,10 @@ using UnityEngine;
 
 public enum STATES : int
 {
-    WITH_ENEMY, WITOUT_ENEMY
+    PATROLLING, ENEMY_SEEN, ENEMY_AS_TARGET,
 }
 
-
+// Clase para las estadisticas y propiedades
 public class BaseEnemy : MonoBehaviour
 {
     [SerializeField]
@@ -17,7 +17,10 @@ public class BaseEnemy : MonoBehaviour
 
     protected Player target;
 
-    protected STATES sTATES = STATES.WITOUT_ENEMY;
+    protected STATES sTATES = STATES.PATROLLING;
+
+    [SerializeField]
+    protected float interatuableDistance;
 
     private void Awake()
     {

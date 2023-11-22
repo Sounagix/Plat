@@ -21,6 +21,14 @@ public class Asteroid : MonoBehaviour
         rb.isKinematic = true;
     }
 
+    private void FixedUpdate()
+    {
+        if (transform.position.y > -10)
+        {
+            Destroy(gameObject);
+        }
+    }
+
     public void InitAsteroid(float t,Vector2 _dir, float v)
     {
         dir = _dir;
