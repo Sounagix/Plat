@@ -38,27 +38,53 @@ public class Brain : Walker
 
     private void Update()
     {
-        if (!target && !waiting && agent.hasPath && sTATES.Equals(STATES.PATROLLING))
+        if (target)
         {
-            var pS = agent.pathStatus;
-            if (pS.Equals(NavMeshPathStatus.PathComplete))
+            Vector3 dir = Vector3.Normalize(target.transform.position - transform.position);
+            dir.y = 0;
+            transform.LookAt(dir);
+            Debug.DrawRay(transform.position, dir * 10, Color.red, 1.0f);
+            float distance = Vector3.Distance(target.transform.position, transform.position);
+            if (distance > attack.GetRangeAttack() && !SetPosition(target.transform.position))
+            {
+                BackToPatroll();
+            }
+            else if (attack.CanAttack() && attack.OnAttackRange())
+            {
+                attack.AttackEnemy();
+            }
+            else if (distance > attack.GetRangeAttack() - 1 && !SetPosition(target.transform.position))
+            {
+
+            }
+        }
+        else
+        {
+            if (!waiting && ReachDestination() && sTATES.Equals(STATES.PATROLLING))
             {
                 waiting = true;
                 float t = Random.Range(timeToWait.x, timeToWait.y);
-                attack.Invoke(nameof(TakeNewPath), t);
+                Invoke(nameof(TakeNewPath), t);
             }
-        }
-        else if (target != null && attack.CanAttack() && attack.OnAttackRange())
-        {
-            attack.AttackEnemy();
-        }
-        else if(target != null && !SetPosition(target.transform.position))
-        {
-            target = null;
-            StartMovement();
+            else if (!IsInvoking()) 
+            {
+                waiting = true;
+                float t = Random.Range(timeToWait.x, timeToWait.y);
+                Invoke(nameof(TakeNewPath), t);
+            }
         }
     }
 
+    private void BackToPatroll()
+    {
+        GetComponent<MeshRenderer>().material.color = Color.green;
+        target = null;
+        sTATES = STATES.PATROLLING;
+        attack.SetTarget(null);
+        waiting = true;
+        float t = Random.Range(timeToWait.x, timeToWait.y);
+        Invoke(nameof(TakeNewPath), t);
+    }
 
 
     private void ManageState()
@@ -78,11 +104,27 @@ public class Brain : Walker
         {
             if (SetPosition(other.transform.position))
             {
+                GetComponent<MeshRenderer>().material.color = Color.red;
                 target = other.GetComponent<Player>();
                 attack.SetTarget(target);
                 sTATES = STATES.ENEMY_SEEN;
             }
+            else
+            {
+                BackToPatroll();
+            }
             
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            if(!SetPosition(other.transform.position))
+            {
+                BackToPatroll();
+            }
         }
     }
 }

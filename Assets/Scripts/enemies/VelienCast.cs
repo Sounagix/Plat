@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class VelienCast : Brain
 {
-
     private void Start()
     {
         SetUp();
-        SetStopDistance();
+        //SetStopDistance();
     }
 
     protected override void SetStopDistance()
     {
-        agent.stoppingDistance = attack.GetRangeAttack();
+        agent.stoppingDistance = target != null ? attack.GetRangeAttack() : 0;
     }
 }

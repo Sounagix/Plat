@@ -42,6 +42,20 @@ public class GunBehaviour : MonoBehaviour
         Invoke(nameof(BackCD), shotCD);
     }
 
+    // método shot que usan los baseEnemy
+    public void ShootEnemy(Vector3 targetPosition, Vector3 position)
+    {
+        CancelInvoke();
+        canShot = false;
+        BulletBehaviour currentBullet = Instantiate(bulletPrefab).GetComponent<BulletBehaviour>();
+        currentBullet.gameObject.transform.position = gunExit.position;
+        Vector3 direction = Vector3.Normalize(targetPosition - gunExit.transform.position);
+        Debug.DrawRay(transform.position, direction * 10, Color.blue, 1.0f);
+        currentBullet.SetUp(enemyTag, damage, direction, gunPower);
+        Invoke(nameof(BackCD), shotCD);
+    }
+
+
     private void BackCD()
     {
         canShot = true;

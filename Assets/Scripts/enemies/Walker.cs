@@ -25,6 +25,8 @@ public class Walker : BaseEnemy
     // Empieza un movimiento
     protected void StartMovement()
     {
+        GetComponent<MeshRenderer>().material.color = Color.green;
+        print("Mov");
         sTATES = STATES.PATROLLING;
         var coll = platformCollider.bounds;
         float x = Random.Range(coll.min.x,coll.max.x);
@@ -33,8 +35,10 @@ public class Walker : BaseEnemy
         Vector3 pos = new Vector3(x, plataform.position.y, z);
         Vector3 dir = Vector3.Normalize(pos - transform.position);
         dir.y = 0;
+
+        SetStopDistance();
         transform.LookAt(dir);
-        agent.SetDestination(pos);
+        print(agent.SetDestination(pos));
     }
 
     protected void TakeNewPath()
@@ -45,11 +49,36 @@ public class Walker : BaseEnemy
 
     protected bool SetPosition(Vector3 newPos)
     {
+        SetStopDistance();
         return agent.SetDestination(newPos);
     }
 
     protected virtual void SetStopDistance()
     {
         agent.stoppingDistance = interatuableDistance;
+    }
+
+    protected bool ReachDestination()
+    {
+        if (agent != null && agent.hasPath)
+        {
+            switch (agent.pathStatus)
+            {
+                case NavMeshPathStatus.PathComplete:
+                    return true;
+                case NavMeshPathStatus.PathPartial:
+                    return false;
+   
+                case NavMeshPathStatus.PathInvalid:
+                    return false;
+                default:
+                    return false;
+                    
+            }
+        }
+        else
+        {
+            return false;
+        }
     }
 }

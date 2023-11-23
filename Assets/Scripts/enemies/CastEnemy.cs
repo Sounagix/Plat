@@ -12,7 +12,7 @@ public class CastEnemy : Attack
         CancelInvoke();
         if (target != null)
         {
-            gunBehaviour.Shoot();
+            gunBehaviour.ShootEnemy(target.transform.position, transform.position);
         }
         canAttack = false;
 
