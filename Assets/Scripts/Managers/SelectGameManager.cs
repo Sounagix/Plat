@@ -24,21 +24,35 @@ public class SelectGameManager : MonoBehaviour
 
     private void SetUpButtons()
     {
-        firstLevelButton.onClick.AddListener(
+        int currentLevelsActived = GameManager.Instance.GetCurrentLevelsActive();
+
+        if (currentLevelsActived <= 1)
+        {
+            firstLevelButton.onClick.AddListener(
             delegate ()
             {
                 GameManager.Instance.ChangeScene(4);
             });
-        secondLevelButton.onClick.AddListener(
+        }
+
+        if (currentLevelsActived <= 2)
+        {
+            secondLevelButton.onClick.AddListener(
             delegate ()
             {
                 GameManager.Instance.ChangeScene(5);
             });
-        thirdLevelButton.onClick.AddListener(
+        }
+
+        if (currentLevelsActived <= 3)
+        {
+            thirdLevelButton.onClick.AddListener(
             delegate ()
             {
                 GameManager.Instance.ChangeScene(6);
             });
+        }
+
         backButton.onClick.AddListener(
             delegate ()
             {

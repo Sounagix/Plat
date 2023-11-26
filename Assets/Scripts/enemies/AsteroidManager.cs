@@ -40,6 +40,7 @@ public class AsteroidManager : MonoBehaviour
 
     private void CreateAsteroid()
     {
+        print("INV METEO");
         GameObject currentAsteroid = Instantiate(asteroidPrefab);
         float x = Random.Range(minPos.x, maxPos.x);
         float z = Random.Range(minPos.y, maxPos.y);

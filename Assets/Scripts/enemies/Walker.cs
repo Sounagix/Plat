@@ -26,7 +26,6 @@ public class Walker : BaseEnemy
     protected void StartMovement()
     {
         GetComponent<MeshRenderer>().material.color = Color.green;
-        print("Mov");
         sTATES = STATES.PATROLLING;
         var coll = platformCollider.bounds;
         float x = Random.Range(coll.min.x,coll.max.x);
@@ -34,11 +33,12 @@ public class Walker : BaseEnemy
 
         Vector3 pos = new Vector3(x, plataform.position.y, z);
         Vector3 dir = Vector3.Normalize(pos - transform.position);
-        dir.y = 0;
+        dir.x = 0;
+        dir.z = 0;
+        transform.LookAt(dir);
 
         SetStopDistance();
-        transform.LookAt(dir);
-        print(agent.SetDestination(pos));
+        agent.SetDestination(pos);
     }
 
     protected void TakeNewPath()

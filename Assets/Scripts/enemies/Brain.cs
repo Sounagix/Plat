@@ -41,7 +41,8 @@ public class Brain : Walker
         if (target)
         {
             Vector3 dir = Vector3.Normalize(target.transform.position - transform.position);
-            dir.y = 0;
+            dir.x = 0;
+            dir.z = 0;
             transform.LookAt(dir);
             Debug.DrawRay(transform.position, dir * 10, Color.red, 1.0f);
             float distance = Vector3.Distance(target.transform.position, transform.position);

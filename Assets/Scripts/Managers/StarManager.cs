@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class StarManager : MonoBehaviour
@@ -9,6 +10,9 @@ public class StarManager : MonoBehaviour
     private int numStars;
 
     private int currentNumStarPicked;
+
+    [SerializeField]
+    private TextMeshProUGUI starText;
 
     private void Awake()
     {
@@ -25,14 +29,20 @@ public class StarManager : MonoBehaviour
     public void TakeStar()
     {
         currentNumStarPicked++;
+        starText.text = currentNumStarPicked.ToString() + "/" + numStars.ToString();
         if (currentNumStarPicked >= numStars)
         {
-            print("Todas las estrellas colecionadas");
+            if (GameManager.Instance.CanActiveMoreLevels())
+            {
+                print("Todas las estrellas colecionadas");
+                GameManager.Instance.ActiveNextLevel();
+            }
         }
     }
 
     public void AddStar()
     {
         numStars++;
+        starText.text = currentNumStarPicked.ToString() + "/" + numStars.ToString();
     }
 }

@@ -23,7 +23,7 @@ public class Asteroid : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (transform.position.y > -10)
+        if (transform.position.y < -10)
         {
             Destroy(gameObject);
         }

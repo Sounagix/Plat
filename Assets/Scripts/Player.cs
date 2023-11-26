@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -56,7 +57,7 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     [Tooltip("Tiempo de CD para el frontal Attack")]
-    private float currentLife;
+    private int maxHp;
 
     [SerializeField]
     [Tooltip("Referencia al controlador del nivel")]
@@ -66,6 +67,10 @@ public class Player : MonoBehaviour
     [Tooltip("Referencia al animator del player")]
     private Animator animator;
 
+    [SerializeField]
+    private Scrollbar hp;
+
+    private int currentHp;
 
     // Cantidad de saltos que lleva
     private int currentNumJump;
@@ -101,6 +106,12 @@ public class Player : MonoBehaviour
         capCollider = GetComponent<CapsuleCollider>();
         // Guardar posición inicial del player
         initPos = transform.position;
+    }
+
+    private void Start()
+    {
+        currentHp = maxHp;
+        hp.numberOfSteps = maxHp;
     }
 
     // correción de velocidad (velocidad física y velocidad para animación)
@@ -256,9 +267,10 @@ public class Player : MonoBehaviour
 
     public void ReciveDamage(float damage)
     {
-        currentLife -= damage;
-        print(currentLife);
-        if (currentLife <= 0)
+        currentHp -= (int)damage;
+        float v = (float)(currentHp - 0) / (maxHp - 0);
+        hp.size = v;
+        if (currentHp <= 0)
         {
             //Die();
             BackToRespawn();
@@ -272,9 +284,10 @@ public class Player : MonoBehaviour
     private void BackToRespawn()
     {
         //GetComponent<Renderer>().material.color = Color.red;
-        print(currentLife);
+        currentHp = maxHp;
+        hp.size = 1;
         transform.position = initPos;
-        Invoke(nameof(BackColor), 1.0f);
+        //Invoke(nameof(BackColor), 1.0f);
     }
 
     private void BackColor()
@@ -285,7 +298,8 @@ public class Player : MonoBehaviour
 
     private void Die()
     {
-        currentLife = 10;
+        currentHp = maxHp;
+        hp.size = 1.0f;
         rb.velocity = Vector3.zero;
         transform.position = initPos;
     }

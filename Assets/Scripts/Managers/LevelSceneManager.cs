@@ -12,9 +12,15 @@ public class LevelSceneManager : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI debugText;
 
+    // número de estrellas necesarias para completar el nivel
+    private int numStarNeeded;
+
+    private int currentNumStar = 0;
+
 
     private void Awake()
     {
+        Physics.gravity = new Vector3(0.0f,-4.0f,0.0f);
         SetUpButtons();
     }
 
@@ -38,5 +44,4 @@ public class LevelSceneManager : MonoBehaviour
     {
         debugText.text = "";
     }
-
 }
