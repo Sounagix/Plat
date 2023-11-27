@@ -35,8 +35,9 @@ public class SelectGameManager : MonoBehaviour
             });
         }
 
-        if (currentLevelsActived <= 2)
+        if (currentLevelsActived >= 2)
         {
+            secondLevelButton.GetComponent<Image>().color = Color.white;
             secondLevelButton.onClick.AddListener(
             delegate ()
             {
@@ -44,8 +45,9 @@ public class SelectGameManager : MonoBehaviour
             });
         }
 
-        if (currentLevelsActived <= 3)
+        if (currentLevelsActived >= 3)
         {
+            thirdLevelButton.GetComponent<Image>().color = Color.white;
             thirdLevelButton.onClick.AddListener(
             delegate ()
             {

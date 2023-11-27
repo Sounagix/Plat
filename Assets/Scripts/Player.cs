@@ -70,6 +70,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     private Scrollbar hp;
 
+    private PlayerSounds playerSounds;
+
     private int currentHp;
 
     // Cantidad de saltos que lleva
@@ -106,6 +108,7 @@ public class Player : MonoBehaviour
         capCollider = GetComponent<CapsuleCollider>();
         // Guardar posición inicial del player
         initPos = transform.position;
+        playerSounds = GetComponent<PlayerSounds>();    
     }
 
     private void Start()
@@ -244,6 +247,7 @@ public class Player : MonoBehaviour
         {
             velocity = jumpVelocity / 2;
         }
+        playerSounds.PlaySound(SOUNDS.JUMP);
         rb.AddForce(Vector2.up * velocity, ForceMode.Force);
     }
 

@@ -14,6 +14,9 @@ public class Asteroid : MonoBehaviour
 
     private Rigidbody rb;
 
+    [SerializeField]
+    private ParticleSystem ptc;
+
 
     private void Awake()
     {
@@ -48,6 +51,7 @@ public class Asteroid : MonoBehaviour
         {
             collision.gameObject.GetComponent<Player>().ReciveDamage(damage);
         }
-        Destroy(gameObject);
+        ptc.Play();
+        Destroy(gameObject,1);
     }
 }

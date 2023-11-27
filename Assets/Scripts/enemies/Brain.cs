@@ -15,6 +15,9 @@ public class Brain : Walker
     [Tooltip("Trigger que detecta enemigo")]
     private SphereCollider rangeSphere;
 
+    [SerializeField]
+    protected Animator animator;
+
     protected Attack attack;
 
     private void Awake()
@@ -38,6 +41,7 @@ public class Brain : Walker
 
     private void Update()
     {
+        animator.SetFloat("Mov",agent.velocity.normalized.x);
         if (target)
         {
             Vector3 dir = Vector3.Normalize(target.transform.position - transform.position);
@@ -78,7 +82,7 @@ public class Brain : Walker
 
     private void BackToPatroll()
     {
-        GetComponent<MeshRenderer>().material.color = Color.green;
+        //GetComponent<MeshRenderer>().material.color = Color.green;
         target = null;
         sTATES = STATES.PATROLLING;
         attack.SetTarget(null);
@@ -105,7 +109,7 @@ public class Brain : Walker
         {
             if (SetPosition(other.transform.position))
             {
-                GetComponent<MeshRenderer>().material.color = Color.red;
+                //GetComponent<MeshRenderer>().material.color = Color.red;
                 target = other.GetComponent<Player>();
                 attack.SetTarget(target);
                 sTATES = STATES.ENEMY_SEEN;

@@ -12,6 +12,9 @@ public class LevelSceneManager : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI debugText;
 
+    [SerializeField]
+    private string initMsg;
+
     // número de estrellas necesarias para completar el nivel
     private int numStarNeeded;
 
@@ -22,6 +25,11 @@ public class LevelSceneManager : MonoBehaviour
     {
         Physics.gravity = new Vector3(0.0f,-4.0f,0.0f);
         SetUpButtons();
+    }
+
+    private void Start()
+    {
+        ShowMsg(initMsg);
     }
 
     private void SetUpButtons()

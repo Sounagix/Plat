@@ -31,13 +31,6 @@ public class MovingPlatform : MonoBehaviour
 
     private void Update()
     {
-        //transform.position = transform.position + (dir * velocity * Time.deltaTime);
-        //float d = Vector3.Distance(transform.position, initPosition); 
-        //if (d > distance)
-        //{
-        //    dir *= -1;
-        //}
-
         if (switchActive)
         {
             float interpolationRatio = (float)elapsedFrames / interpolationFramesCount;
@@ -47,6 +40,16 @@ public class MovingPlatform : MonoBehaviour
             if (elapsedFrames >= interpolationFramesCount)
             {
                 switchActive = false;
+                initPosition = transform.position;
+            }
+        }
+        else
+        {
+            transform.position = transform.position + (dir * velocity * Time.deltaTime);
+            float d = Vector3.Distance(transform.position, initPosition);
+            if (d > distance)
+            {
+                dir *= -1;
             }
         }
     }

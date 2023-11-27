@@ -18,7 +18,8 @@ public class Interruptor : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             movingPlatform.ActivePlatform(switchPosition.position);
-            levelSceneManager.ShowMsg("Presiona tecla x para traer la plataforma");
+            levelSceneManager.ShowMsg("La plataforma viene en camino");
+            Destroy(gameObject);
         }
     }
 }

@@ -25,7 +25,7 @@ public class Walker : BaseEnemy
     // Empieza un movimiento
     protected void StartMovement()
     {
-        GetComponent<MeshRenderer>().material.color = Color.green;
+        //GetComponent<MeshRenderer>().material.color = Color.green;
         sTATES = STATES.PATROLLING;
         var coll = platformCollider.bounds;
         float x = Random.Range(coll.min.x,coll.max.x);
