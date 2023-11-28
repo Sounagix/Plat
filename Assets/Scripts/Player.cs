@@ -70,6 +70,9 @@ public class Player : MonoBehaviour
     [SerializeField]
     private Scrollbar hp;
 
+    [SerializeField]
+    private SkinnedMeshRenderer meshRenderer;
+
     private PlayerSounds playerSounds;
 
     private int currentHp;
@@ -150,6 +153,11 @@ public class Player : MonoBehaviour
             animator.SetFloat("movX",rb.velocity.z);
             animator.SetFloat("movY", rb.velocity.y);
         }
+
+        //if(onGround && rb.velocity.magnitude <= 0.0f && playerSounds.GetStatus(SOUNDS.MOV))
+        //{
+        //    playerSounds.StopSound();
+        //}
 
     }
 
@@ -232,6 +240,7 @@ public class Player : MonoBehaviour
     // Mueve al jugador en una dirección
     public void Move(Vector3 dir)
     {
+        //playerSounds.PlaySound(SOUNDS.MOV);
         float velocity = bendActive ? movBendVelocity : running ? runVelocity : walkVelocity;
         velocity = defensiveModeActive ? velocity / 2 : velocity;
         rb.AddForce(dir * velocity, ForceMode.Impulse);
@@ -271,6 +280,8 @@ public class Player : MonoBehaviour
 
     public void ReciveDamage(float damage)
     {
+        meshRenderer.material.color = Color.red;
+        playerSounds.PlaySound(SOUNDS.DAMAGE);
         currentHp -= (int)damage;
         float v = (float)(currentHp - 0) / (maxHp - 0);
         hp.size = v;
@@ -283,10 +294,17 @@ public class Player : MonoBehaviour
         //{
         //    Die();
         //}
+        Invoke(nameof(BackFromTint), 1.0f);
+    }
+
+    private void BackFromTint()
+    {
+        meshRenderer.material.color = Color.white;
     }
 
     private void BackToRespawn()
     {
+        playerSounds.PlaySound(SOUNDS.DIE);
         //GetComponent<Renderer>().material.color = Color.red;
         currentHp = maxHp;
         hp.size = 1;
@@ -294,9 +312,12 @@ public class Player : MonoBehaviour
         //Invoke(nameof(BackColor), 1.0f);
     }
 
-    private void BackColor()
+    public void ResetPlayer()
     {
-        //GetComponent<Renderer>().material.color = Color.white;
+        playerSounds.PlaySound(SOUNDS.DIE);
+        levelSceneManager.ShowMsg("Faltan estrellas por tocar!");
+        rb.velocity = Vector3.zero;
+        transform.position = initPos;
     }
 
 
@@ -367,6 +388,7 @@ public class Player : MonoBehaviour
 
     public void ActiveDefensiveMode()
     {
+        playerSounds.PlaySound(SOUNDS.DEFENSIVE);
         animator.SetBool("Defensive", true);
         defensiveModeActive = true;
         levelSceneManager.ShowMsg("defensive mode activo");
@@ -374,6 +396,7 @@ public class Player : MonoBehaviour
 
     public void DeactiveDefensiveMode()
     {
+        playerSounds.StopSound();
         animator.SetBool("Defensive", false);
         defensiveModeActive = false;
         levelSceneManager.ShowMsg("defensive mode desactivado");

@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour
 
     public bool CanActiveMoreLevels()
     {
-        return levelsActived < numOfLevels;
+        return levelsActived <= numOfLevels;
     }
 
     public void ActiveNextLevel()

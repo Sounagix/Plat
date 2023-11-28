@@ -9,9 +9,15 @@ public class StarItem : MonoBehaviour
     [SerializeField]
     private float velocity;
 
+    private AudioSource audioSource;
+
+    private Collider collider;
+
 
     private void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+        collider = GetComponent<Collider>();
         StarManager.instance.AddStar();
     }
 
@@ -20,7 +26,9 @@ public class StarItem : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             StarManager.instance.TakeStar();
-            Destroy(gameObject);
+            audioSource.Play();
+            collider.enabled = false;
+            Destroy(gameObject, 1);
         }
     }
 

@@ -17,9 +17,15 @@ public class Asteroid : MonoBehaviour
     [SerializeField]
     private ParticleSystem ptc;
 
+    [SerializeField]
+    private AudioClip explotion;
+
+    private AudioSource audioSource;
+
 
     private void Awake()
     {
+        audioSource = GetComponent<AudioSource>();
         rb = GetComponent<Rigidbody>();
         rb.isKinematic = true;
     }
@@ -51,6 +57,7 @@ public class Asteroid : MonoBehaviour
         {
             collision.gameObject.GetComponent<Player>().ReciveDamage(damage);
         }
+        audioSource.PlayOneShot(explotion);
         ptc.Play();
         Destroy(gameObject,1);
     }

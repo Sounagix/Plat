@@ -45,4 +45,9 @@ public class StarManager : MonoBehaviour
         numStars++;
         starText.text = currentNumStarPicked.ToString() + "/" + numStars.ToString();
     }
+
+    public bool AllStarsTaken()
+    {
+        return currentNumStarPicked >= numStars;
+    }
 }

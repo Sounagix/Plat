@@ -149,6 +149,7 @@ MonoBehaviour:
   levelSceneManager: {fileID: 0}
   animator: {fileID: 7305837554507560909}
   hp: {fileID: 0}
+  meshRenderer: {fileID: 6084302264990424973}
 --- !u!114 &7305837554921199456
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -184,6 +185,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jumpClip: {fileID: 8300000, guid: 514dde8b823689346907b7888aaafa33, type: 3}
+  damageClip: {fileID: 8300000, guid: 7cfe4332d400f094c8ac815433b193ba, type: 3}
+  dieSound: {fileID: 8300000, guid: 15afbc80ed1c2b04aa0d5019d41e3dd9, type: 3}
+  defensiveClip: {fileID: 8300000, guid: dde6b8c292bb4a34a895f94f85784cf0, type: 3}
+  movClip: {fileID: 8300000, guid: a13d52a10a51a894bb91c8d9a201e9cd, type: 3}
 --- !u!82 &2348776720054564374
 AudioSource:
   m_ObjectHideFlags: 0
@@ -756,6 +761,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8f68a979e9ccb6748aaef4f0fdbc7b60, type: 3}
+--- !u!137 &6084302264990424973 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -5689097321421168202, guid: 8f68a979e9ccb6748aaef4f0fdbc7b60, type: 3}
+  m_PrefabInstance: {fileID: 7305837554837454395}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6226963997799622914 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -5545881332141959367, guid: 8f68a979e9ccb6748aaef4f0fdbc7b60, type: 3}
